@@ -20,15 +20,15 @@ use XML::LibXML;
 
 =head1 NAME
 
-SVG::Convert - Convert from SVG to other format.
+SVG::Convert - The fantastic new SVG::Convert!
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -39,7 +39,7 @@ our $VERSION = '0.01';
 
 =head1 METHODS
 
-=head2 new([$args])
+=head2 new
 
 Constructor.
 The "$args" arguments is HASHREF.
@@ -102,6 +102,12 @@ sub new {
 
 See below about %args details.
 
+  my $xaml_doc = $sconv->convert(
+    format => "xaml",
+    src_file => $src_file,
+    output => "doc"
+  );
+
 =over 4
 
 =item format
@@ -130,6 +136,10 @@ The output parameter is "file" or "string" or "doc".
 =item output_file
 
 The output_file parameter is output filename.
+
+=item convert_opts
+
+The convert_opts parameter is extra params for driver.
 
 =back
 
@@ -179,7 +189,11 @@ sub convert {
                 type => SCALAR,
                 optional => 1,
                 depends => [qw/output/]
-            }
+            },
+            convert_opts => {
+                type => HASHREF,
+                optional => 1,
+            },
         }
     );
 
@@ -189,8 +203,10 @@ sub convert {
             $self->parser->parse_file($args{src_file}) :
             $self->parser->parse_string($args{src_string});;
 
+    my $convert_opts = ($args{convert_opts}) ? $args{convert_opts} : {};
+
     my $method = "convert_" . $args{output};
-    return $driver->$method($src_doc, $args{output_file});
+    return $driver->$method($src_doc, $args{output_file}, $convert_opts);
 }
 
 =head1 SEE ALSO
@@ -208,6 +224,10 @@ sub convert {
 =item L<Scalar::Util>
 
 =item L<XML::LibXML>
+
+=item L<SVG::Convert::Driver::XAML>
+
+=item L<SVG::Convert::Driver::PNG>
 
 =back
 

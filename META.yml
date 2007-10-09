@@ -1,5 +1,5 @@
 ---
-abstract: 'Convert from SVG to other format.'
+abstract: 'The fantastic new SVG::Convert!'
 author: 'Toru Yamaguchi <zigorou@cpan.org>'
 distribution_type: module
 generated_by: 'Module::Install version 0.67'
@@ -20,5 +20,4 @@ requires:
   Params::Validate: 0
   Scalar::Util: 0
   XML::LibXML: 0
-  XML::LibXSLT: 0
-version: 0.01
+version: 0.02
